@@ -20,12 +20,19 @@ const addButtonEl = document.getElementById("add-button");
 const shoppingListEl = document.getElementById("shopping-list");
 
 addButtonEl.addEventListener("click", () => {
-  let inputValue = inputFieldEl.value;
+  // let inputValue = inputFieldEl.value;
+  let inputValue = sanitizeHTML(inputFieldEl.value);
   push(groceriesInDB, inputValue);
 
   clearInputFieldEl();
   // appendItemToShoppingListEl(inputValue);
 });
+
+function sanitizeHTML(str) {
+  return str.replace(/javascript:/gi, "").replace(/[^\w-_. ]/gi, function (c) {
+    return `&#${c.charCodeAt(0)};`;
+  });
+}
 
 onValue(groceriesInDB, function (snapshot) {
   if (snapshot.exists()) {
